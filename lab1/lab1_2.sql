@@ -91,16 +91,10 @@ where detail_code='D1' and number>(
 /*35*/
 SELECT DISTINCT p.provider_code, d.detail_code
 FROM number_of_details p
-CROSS JOIN (
-    SELECT DISTINCT provider_code
-    FROM number_of_details
-) s
-CROSS JOIN (
-    SELECT DISTINCT detail_code
-    FROM number_of_details
-) d
+CROSS JOIN (SELECT DISTINCT provider_code FROM number_of_details) s
+CROSS JOIN (SELECT DISTINCT detail_code FROM number_of_details) d
 WHERE NOT EXISTS (
-    SELECT 1
+    SELECT *
     FROM number_of_details
     WHERE provider_code = s.provider_code
     AND detail_code = d.detail_code
