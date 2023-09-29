@@ -11,7 +11,7 @@ import org.hibernate.annotations.Cascade;
 @NoArgsConstructor(force = true)
 @Entity
 @Table(name = "halls")
-public class Hall{
+public class Hall implements Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hall_id", nullable = false)

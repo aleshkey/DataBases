@@ -7,7 +7,7 @@ import org.hibernate.annotations.Cascade;
 @Data
 @Entity
 @Table (name = "images")
-public class Image{
+public class Image implements Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id", nullable = false)

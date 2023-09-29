@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "exhibitions")
-public class Exhibition{
+public class Exhibition implements Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exhibition_id", nullable = false)

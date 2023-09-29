@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 @Entity
 @Table(name = "owners")
-public class Owner{
+public class Owner implements Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id", nullable = false)

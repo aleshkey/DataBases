@@ -32,7 +32,7 @@ public class HallController {
 
     @PostMapping(value = "/add-hall")
     public RedirectView create(@RequestBody JsonNode hallInJson){
-        hallMapper.addHall(hallInJson);
+        hallMapper.add(hallInJson);
         return new RedirectView("/halls");
     }
 
@@ -42,12 +42,14 @@ public class HallController {
         return new RedirectView("/halls");
     }
 
-    @GetMapping(value = "/{id}/update")
-    public void update(@PathVariable int id){}
+    @GetMapping(value = "/{id}/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Hall update(@PathVariable int id){
+        return hallMapper.findById(id);
+    }
 
     @PostMapping(value = "/{id}")
     public RedirectView updateById(@PathVariable int id, @RequestBody JsonNode hallInJson){
-        hallMapper.updateHall(id, hallInJson);
+        hallMapper.update(id, hallInJson);
         return new RedirectView("/halls/"+id);
     }
 }

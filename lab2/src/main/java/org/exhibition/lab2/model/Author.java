@@ -8,11 +8,11 @@ import java.util.List;
 
 @Data
 @Entity(name = "authors")
-public class Author{
+public class Author implements Model{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "author_id")
-    private Long authorId;
+    private int id;
 
     @Column(name = "author_name")
     private String authorName;
