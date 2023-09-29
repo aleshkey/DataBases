@@ -1,2 +1,4 @@
 *.yml
 .idea
+*mvn*
+test
