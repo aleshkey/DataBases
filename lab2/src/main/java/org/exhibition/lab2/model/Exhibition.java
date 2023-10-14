@@ -1,5 +1,6 @@
 package org.exhibition.lab2.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,5 +27,6 @@ public class Exhibition implements Model{
             joinColumns = { @JoinColumn(name = "exhibition_id") },
             inverseJoinColumns = { @JoinColumn(name = "author_id") }
     )
+    @JsonManagedReference
     private List<Author> authors;
 }

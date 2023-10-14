@@ -1,5 +1,7 @@
 package org.exhibition.lab2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,5 +31,6 @@ public class Hall implements Model{
     @ManyToOne(fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "owner_id", referencedColumnName = "owner_id")
+    @JsonManagedReference
     private Owner owner;
 }

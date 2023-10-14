@@ -1,6 +1,8 @@
 package org.exhibition.lab2.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,5 +35,7 @@ public class Owner implements Model{
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
+    @JsonBackReference
     private List<Hall> halls;
+
 }

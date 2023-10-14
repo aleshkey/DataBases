@@ -15,4 +15,8 @@ public class AuthorService implements org.exhibition.lab2.service.Service<Author
     public CrudRepository<Author, Long> getRepository() {
         return authorRepository;
     }
+
+    public Author findByName (String name){
+        return authorRepository.findByName(name);
+    }
 }

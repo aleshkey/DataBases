@@ -1,17 +1,16 @@
 package org.exhibition.lab2.Dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.exhibition.lab2.model.Hall;
 import org.exhibition.lab2.model.Model;
 import org.exhibition.lab2.service.Service;
+
 
 import java.util.List;
 
 public interface Mapper <T extends Model>{
 
     Service<T> getService();
+
 
     default List<T> getAll(){
         return getService().getAll();
@@ -21,16 +20,10 @@ public interface Mapper <T extends Model>{
         return getService().findById(id);
     }
 
-    Class<T> getModelClass();
+    T fromJson(JsonNode modelInJson);
 
-    default void add(JsonNode hallInJson){
-        ObjectMapper jsonObjectMapper = new ObjectMapper();
-        T newModel = null;
-        try {
-            newModel = jsonObjectMapper.treeToValue(hallInJson, getModelClass());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    default void add(JsonNode modelInJson){
+        T newModel = fromJson(modelInJson);
         getService().save(newModel);
     }
 
@@ -38,14 +31,8 @@ public interface Mapper <T extends Model>{
         getService().deleteById(id);
     }
 
-    default void update(int id, JsonNode hallInJson){
-        ObjectMapper jsonObjectMapper = new ObjectMapper();
-        T newModel = null;
-        try {
-            newModel = jsonObjectMapper.treeToValue(hallInJson, getModelClass());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    default void update(int id, JsonNode modelInJson){
+        T newModel = fromJson(modelInJson);
         newModel.setId(id);
         getService().save(newModel);
     }

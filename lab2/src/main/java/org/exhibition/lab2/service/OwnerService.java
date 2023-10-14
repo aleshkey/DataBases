@@ -17,4 +17,8 @@ public class OwnerService implements org.exhibition.lab2.service.Service<Owner> 
     public CrudRepository<Owner, Long> getRepository() {
         return ownerRepository;
     }
+
+    public Owner getOwnerByName(String name){
+        return ownerRepository.findByName(name).orElse(new Owner());
+    }
 }

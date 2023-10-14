@@ -1,55 +1,26 @@
 package org.exhibition.lab2.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.exhibition.lab2.Dto.HallMapper;
+import org.exhibition.lab2.Dto.Mapper;
 import org.exhibition.lab2.model.Hall;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("halls")
-public class HallController {
+
+public class HallController implements CrudController<Hall>{
 
     @Autowired
     private HallMapper hallMapper;
 
-    @GetMapping(value = "", produces= MediaType.APPLICATION_JSON_VALUE)
-    public List<Hall> getAll(){
-        return hallMapper.getAll();
+    @Override
+    public Mapper<Hall> getMapper() {
+        return hallMapper;
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Hall getSingle(@PathVariable int id){
-        return hallMapper.findById(id);
-    }
-
-    @GetMapping(value = "/add")
-    public void add(){}
-
-    @PostMapping(value = "/add-hall")
-    public RedirectView create(@RequestBody JsonNode hallInJson){
-        hallMapper.add(hallInJson);
-        return new RedirectView("/halls");
-    }
-
-    @PostMapping(value = "/{id}/delete-hall")
-    public RedirectView deleteById(@PathVariable int id){
-        hallMapper.deleteById(id);
-        return new RedirectView("/halls");
-    }
-
-    @GetMapping(value = "/{id}/update", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Hall update(@PathVariable int id){
-        return hallMapper.findById(id);
-    }
-
-    @PostMapping(value = "/{id}")
-    public RedirectView updateById(@PathVariable int id, @RequestBody JsonNode hallInJson){
-        hallMapper.update(id, hallInJson);
-        return new RedirectView("/halls/"+id);
+    @Override
+    public String getStartURL() {
+        return "/halls";
     }
 }

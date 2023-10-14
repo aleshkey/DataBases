@@ -1,5 +1,7 @@
 package org.exhibition.lab2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Cascade;
@@ -22,6 +24,7 @@ public class Image implements Model{
     @ManyToOne(fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "author_id", referencedColumnName = "author_id")
+    @JsonManagedReference
     private Author author;
 
 }

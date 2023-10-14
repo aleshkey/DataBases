@@ -21,12 +21,10 @@ public interface Service <T extends Model>{
         if(check.isPresent()){
             return check.get();
         }
-        T res = null;
-        return res;
+        return null;
     }
 
-    default void save(T model){getRepository().save(model);
-    }
+    default void save(T model){getRepository().save(model);}
 
     default void deleteById(int id){
         getRepository().deleteById(Long.valueOf(id));
