@@ -15,4 +15,8 @@ public class ExhibitionService implements org.exhibition.lab2.service.Service<Ex
     public CrudRepository<Exhibition, Long> getRepository() {
         return exhibitionRepository;
     }
+
+    public Exhibition findByName(String exhibition) {
+        return exhibitionRepository.findByName(exhibition);
+    }
 }

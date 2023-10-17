@@ -3,17 +3,22 @@ import {GetJson} from "../util/Util";
 import ReactDOM from "react-dom/client";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import React from "react";
+import {getMenu} from "../util/Menu";
 
 export default class Owner extends Model{
+    name = 'OWNERS'
 
-    createOrUpdatePage= (url) =>{
+    createOrUpdatePage= (url, data) =>{
         const router = ReactDOM.createRoot(document.getElementById('root'));
         let elem =
             (<div>
+                <h1>{this.name}</h1>
+                <hr/>
+                {getMenu()}
                 <form>
-                    <p><input type="text" name='name' placeholder={'name'}></input></p>
-                    <p><input type="text" name='address' placeholder={'address'}></input></p>
-                    <p><input type="text" name='phoneNumber' placeholder={'phone number'}></input></p>
+                    <p><input type="text" name='name' placeholder={'name'} defaultValue={data === undefined ? '' : data.name}></input></p>
+                    <p><input type="text" name='address' placeholder={'address'} defaultValue={data === undefined ? '' : data.address}></input></p>
+                    <p><input type="text" name='phoneNumber' placeholder={'phone number'} defaultValue={data === undefined ? '' : data.phoneNumber}></input></p>
                     <button onClick={() => {window.location.reload()}}>BACK</button>
                     <button onClick={() => {
                         let name = document.getElementsByName("name");
@@ -45,6 +50,8 @@ export default class Owner extends Model{
         let elem = (
             <div>
                 <h1>{data.name}</h1>
+                <hr/>
+                {getMenu()}
                 <p className='halls-info'>Address : {data.address}</p>
                 <p className='halls-info'>Phone number : {data.phoneNumber}</p>
                 <button onClick={() => {
@@ -52,7 +59,7 @@ export default class Owner extends Model{
                 }}>BACK
                 </button>
                 <button onClick={() => {
-                    this.createOrUpdatePage('http://localhost:8080/owners/' + id)
+                    this.createOrUpdatePage('http://localhost:8080/owners/' + id, data)
                 }}>UPDATE
                 </button>
                 <button onClick={() => {
@@ -63,40 +70,6 @@ export default class Owner extends Model{
                 }}>DELETE
                 </button>
             </div>
-        );
-        root.render(elem);
-    }
-
-    homePage = () => {
-        let data = GetJson("http://localhost:8080/owners");
-        let root = ReactDOM.createRoot(document.getElementById('root'));
-        let elem = (
-            <Router>
-                <div id='router'>
-                    <h1 className='for-delete'>OWNERS</h1>
-                    <ul className='for-delete'>
-                        {data && (
-                            data.map(item => (
-                                <li key={item.id}>
-                                    <Link to={`/owners/${item.id}`} onClick={() => {
-                                        window.location.href = `/owners/${item.id}`
-                                    }}>{item.name} : {item.address}</Link>
-                                </li>
-                            )))}
-                    </ul>
-                    <button className='for-delete' onClick={() => {
-                        this.createOrUpdatePage('http://localhost:8080/owners')
-                    }}>CREATE
-                    </button>
-                    <button className='for-delete' onClick={() => {
-                        window.location.href=`/`
-                    }}>BACK
-                    </button>
-                    <Switch>
-                        <Route path="/owners/:id" component={this.singlePage}/>
-                    </Switch>
-                </div>
-            </Router>
         );
         root.render(elem);
     }

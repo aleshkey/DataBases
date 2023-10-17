@@ -1,26 +1,51 @@
 import ReactDOM from "react-dom/client";
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import React from "react";
 import {GetJson} from "../util/Util";
 import Model from "./Model";
+import '../styles/styles.css'
+import {getMenu} from "../util/Menu";
 
 export default class Hall extends Model{
+    name = 'HALLS'
 
-    createOrUpdatePage= (url) =>{
+    createOrUpdatePage= (url, data, exhibitions) =>{
         const router = ReactDOM.createRoot(document.getElementById('root'));
+        console.log(exhibitions)
         let elem =
             (<div>
+                <h1>{this.name}</h1>
+                <hr/>
+                {getMenu()}
                 <form>
-                    <p><input type="text" name='name' placeholder={'name'}></input></p>
-                    <p><input type="text" name='address' placeholder={'address'}></input></p>
-                    <p><input type="text" name='square' placeholder={'square'}></input></p>
-                    <p><input type="text" name='owner' placeholder={'owner'}></input></p>
+                    <p><input type="text" name='name' placeholder={'name'} defaultValue={data !== undefined ? data.name : ''}></input></p>
+                    <p><input type="text" name='address' placeholder={'address'} defaultValue={data !== undefined ? data.address : ''}></input></p>
+                    <p><input type="text" name='square' placeholder={'square'} defaultValue={data !== undefined ? data.square : ''}></input></p>
+                    <p>
+                        <label htmlFor="owners-select">Choose an owner: </label>
+                        <select name="owners" id="owners-select">
+                            {this._helpItem && this._helpItem.map(item =>{
+                                return <option value={item.name}>  {item.name}</option>
+                            })}
+                        </select>
+                    </p>
+                    {exhibitions !== undefined ?
+                    <p>
+                        <label htmlFor="exhibitions-select">Choose an exhibition: </label>
+                        <select name="exhibitions" id="exhibitions-select">
+                            {exhibitions && exhibitions.map(item =>{
+                                return <option value={item.name}>  {item.name}</option>
+                            })}
+                        </select>
+                    </p> : ''}
+
                     <button onClick={() => {window.location.reload()}}>BACK</button>
                     <button onClick={() => {
                         let name = document.getElementsByName("name");
                         let address = document.getElementsByName("address");
                         let square = document.getElementsByName("square");
-                        let owner = document.getElementsByName("owner");
+                        let owner = document.getElementById("owners-select");
+                        let exhibition = document.getElementById("exhibitions-select");
+                        console.log(owner.value);
                         fetch(url, {
                             method: 'POST',
                             headers: {
@@ -31,7 +56,8 @@ export default class Hall extends Model{
                                 name: name[0].value,
                                 address: address[0].value,
                                 square: square[0].value,
-                                owner: owner[0].value
+                                owner: owner.value,
+                                exhibition: exhibition.value
                             })
                         })
                         window.location.reload()}
@@ -44,22 +70,27 @@ export default class Hall extends Model{
     singlePage= ({match}) => {
         let root = ReactDOM.createRoot(document.getElementById('root'));
         const id = match.params.id;
+        let exhibitions = GetJson('http://localhost:8080/exhibitions');
         let data = GetJson('http://localhost:8080/halls/' + id);
+        console.log(data.exhibition)
         if (data.owner !== undefined) {
-            console.log(data.owner.name);
             let elem = (
                 <div>
-                    <h1>HALL {id}</h1>
-                    <p className='halls-info'>Name : {data.name}</p>
+                    <h1>{data.name}</h1>
+                    <hr/>
+                    {getMenu()}
                     <p className='halls-info'>Address : {data.address}</p>
                     <p className='halls-info'>Square : {data.square}</p>
                     <p className='halls-info'><a href={'http://localhost:3000/owners/'+data.owner.id}>Owner : {data.owner.name}</a></p>
-                    <button onClick={() => {
+                    {data.exhibition!==null ?
+                        <p className='halls-info'><a href={'http://localhost:3000/exhibitions/'+data.exhibition.id}>Exhibition : {data.exhibition.name} - {data.exhibition.date}</a></p>
+                        : <p>Exhibition is not chosen</p>
+                    }<button onClick={() => {
                         window.location.href = `/halls`
                     }}>BACK
                     </button>
                     <button onClick={() => {
-                        this.createOrUpdatePage('http://localhost:8080/halls/' + id)
+                        this.createOrUpdatePage('http://localhost:8080/halls/' + id, data, exhibitions);
                     }}>UPDATE
                     </button>
                     <button onClick={() => {
@@ -75,37 +106,4 @@ export default class Hall extends Model{
         }
     }
 
-    /*homePage = () =>{
-        let data = GetJson("http://localhost:8080/halls");
-        let root = ReactDOM.createRoot(document.getElementById('root'));
-        let elem = (
-            <Router>
-                <div id='router'>
-                    <h1 className='for-delete'>HALLS</h1>
-                    <ul className='for-delete'>
-                        {data && (
-                            data.map(item => (
-                                <li key={item.id}>
-                                    <Link to={`/halls/${item.id}`} onClick={() => {
-                                        window.location.href = `/halls/${item.id}`
-                                    }}>{item.name} : {item.address}</Link>
-                                </li>
-                            )))}
-                    </ul>
-                    <button className='for-delete' onClick={() => {
-                        this.createOrUpdatePage('http://localhost:8080/halls')
-                    }}>CREATE
-                    </button>
-                    <button className='for-delete' onClick={() => {
-                        window.location.href=`/`
-                    }}>BACK
-                    </button>
-                    <Switch>
-                        <Route path="/halls/:id" component={this.singlePage}/>
-                    </Switch>
-                </div>
-            </Router>
-        );
-        root.render(elem);
-    }*/
 }

@@ -1,7 +1,6 @@
 package org.exhibition.lab2.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Cascade;
@@ -27,10 +26,6 @@ public class Author implements Model{
 
     @Column(name = "author_education")
     private String education;
-
-    @ManyToMany(mappedBy = "authors")
-    @JsonBackReference
-    private List<Exhibition> exhibitions;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)

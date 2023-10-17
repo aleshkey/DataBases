@@ -30,6 +30,7 @@ public class ImageMapper implements Mapper<Image>{
         model.setExecution(jsonObject.getString("execution"));
         model.setCreationDate(jsonObject.getString("creationDate"));
         model.setAuthor(authorService.findByName(jsonObject.getString("author")));
+        model.setName(jsonObject.getString("name"));
         return model;
     }
 }

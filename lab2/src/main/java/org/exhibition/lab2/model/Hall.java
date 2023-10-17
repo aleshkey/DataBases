@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
+import org.springframework.lang.Nullable;
 
 @Data
 @AllArgsConstructor
@@ -33,4 +34,11 @@ public class Hall implements Model{
     @JoinColumn(name = "owner_id", referencedColumnName = "owner_id")
     @JsonManagedReference
     private Owner owner;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JoinColumn(name = "exhibition_id", referencedColumnName = "exhibition_id")
+    @JsonManagedReference
+    @Nullable
+    private Exhibition exhibition;
 }

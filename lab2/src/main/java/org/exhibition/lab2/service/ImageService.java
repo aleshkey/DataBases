@@ -15,4 +15,8 @@ public class ImageService implements org.exhibition.lab2.service.Service<Image> 
     public CrudRepository<Image, Long> getRepository() {
         return imageRepository;
     }
+
+    public Image findByName(String name){
+        return imageRepository.findByNameIgnoreCase(name);
+    }
 }
